@@ -4,7 +4,7 @@ import sqlite3
 
 print("started")
 
-bot = telebot.TeleBot('5654743331:AAGg14yIENs3F3c47AjCtNGcKcEF5wkakgM')
+bot = telebot.TeleBot('TOKEN')
 
 with sqlite3.connect('.\\testBotbd.db', check_same_thread=False) as db:
     cur = db.cursor()
