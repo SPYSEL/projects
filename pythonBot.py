@@ -1,8 +1,7 @@
 import telebot
 from telebot import types
 import sqlite3
-
-print("started")
+import asyncio
 
 bot = telebot.TeleBot('TOKEN')
 
@@ -12,9 +11,9 @@ with sqlite3.connect('.\\testBotbd.db', check_same_thread=False) as db:
          cv INTEGER, vc INTEGER, te INTEGER,\
           ar INTEGER, yp INTEGER, uc INTEGER,\
            gd INTEGER, sc INTEGER, cs INTEGER,\
-            ms INTEGER, cp INTEGER, cd INTEGER, mg INTEGER, summ INTEGER)")
+            ms INTEGER, cp INTEGER, cd INTEGER, mg INTEGER)")
 
-# Кнопки
+#                             Кнопки
 ########################################################################
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 markup.add(types.KeyboardButton("Информация по специальностям колледжа"))
@@ -51,8 +50,34 @@ devklsss.add(types.KeyboardButton('Ознакомиться со специал�
 devklsss.add(types.KeyboardButton('Стоимость обучения'))
 devklsss.add(types.KeyboardButton('Вернуться назад'))
 ########################################################################
-##############################ТЕСТ######################################
+marka = types.ReplyKeyboardMarkup(resize_keyboard=True)
+marka.add(types.KeyboardButton('Очная'))
+marka.add(types.KeyboardButton('Заочное'))
+marka.add(types.KeyboardButton('Переподготовка/Повышение квалификации'))
+marka.add(types.KeyboardButton('Вернуться назад'))
 ########################################################################
+markup3 = types.ReplyKeyboardMarkup(resize_keyboard=True)
+markup3.add('Cтруктура и органы управления образовательной организацией')
+markup3.add('Организация образовательной деятельности')
+markup3.add('Материально-техническое обеспечение и оснащённость образовательного процесса')
+markup3.add('Стипендии и иные виды материальной поддержки')
+markup3.add('Платные образовательные услуги')
+markup3.add('Доступная среда')
+markup3.add('Доступ к информационным системам и информационно-телекоммуникационным сетям')
+markup3.add('Вернуться назад')
+########################################################################
+devklss = types.ReplyKeyboardMarkup(resize_keyboard=True)
+devklss.add('Список документов при поступлении')
+devklss.add('Ознакомиться со специальностями')
+devklss.add('Вернуться назад')
+########################################################################
+markup2 = types.ReplyKeyboardMarkup(resize_keyboard=True)
+markup2.add(types.KeyboardButton('Узнать больше о специальностях'))
+markup2.add(types.KeyboardButton('Вернуться к началу'))
+########################################################################
+budgetplat3 = types.ReplyKeyboardMarkup(resize_keyboard=True)
+budgetplat3.add('Вернуться назад')
+##############################ТЕСТ######################################
 firstquetion = types.ReplyKeyboardMarkup(resize_keyboard=True)
 firstquetion.add(types.KeyboardButton('Математика'))
 firstquetion.add(types.KeyboardButton('Информатика'))
@@ -80,8 +105,6 @@ besedio.add(types.KeyboardButton("Вернуться назад"))
 ########################################################################
 vistavka = types.ReplyKeyboardMarkup(resize_keyboard=True)
 vistavka.add(types.KeyboardButton("Научная выставка"))
-vistavka.add(types.KeyboardButton("Творческая выставка"))
-vistavka.add(types.KeyboardButton("Историческая выставка"))
 vistavka.add(types.KeyboardButton("Выставка архитектуры"))
 vistavka.add(types.KeyboardButton("Ярмарка и выставка услуг"))
 vistavka.add(types.KeyboardButton("Выставка продукции производственного назначения"))
@@ -136,15 +159,7 @@ ysloviajob.add(types.KeyboardButton("Работать с высокотехно�
 ysloviajob.add(types.KeyboardButton("Работать в команде"))
 ysloviajob.add(types.KeyboardButton("Работать в помещении"))
 ysloviajob.add(types.KeyboardButton("Вернуться назад"))
-########################################################################
-##########################INLITE_TEST_BUTTON########################################
-inlin = types.InlineKeyboardMarkup(row_width=1)
-inlineItem = types.InlineKeyboardButton("")
-
-
-##########################INLITE_TEST_BUTTON########################################
-
-# инфа
+################################################ИНФА#########################################################
 pervoeotdel = ('1. Архитектура (базовый уровень)\n'
                '2. Водоснабжение и водоотведение (базовый уровень)\n'
                '3. Гостиничное дело (базовый уровень)\n'
@@ -197,9 +212,7 @@ spisokdoks = ('Поступающим в колледж необходимо п�
               '2. Документ об образовании\n'
               '3. Фотографии 3х4 (4шт.)\n'
               '4. Документ, удостоверяющий личность')
-
-################################################ИНФА#########################################################
-# старт
+################################################СТАРТ#########################################################
 @bot.message_handler(commands=['start'])
 def start(message):
     send = bot.send_message(message.chat.id, "Привет, это телеграм бот колледжа АКС ЖКХ,\
@@ -211,86 +224,73 @@ def start(message):
 def otdelenie(message):
     if message.text == 'Информация по специальностям колледжа':
 
-        marka = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        marka.add(types.KeyboardButton('Очная'))
-        marka.add(types.KeyboardButton('Заочное'))
-        marka.add(types.KeyboardButton('Переподготовка/Повышение квалификации'))
-        marka.add(types.KeyboardButton('Вернуться назад'))
-        send = bot.send_message(message.chat.id, 'Выберете то что хотите узнать:', reply_markup=marka)
-        bot.register_next_step_handler(send, formy)
+        sendotd = bot.send_message(message.chat.id, 'Выберете то что хотите узнать:', reply_markup=marka)
+        bot.register_next_step_handler(sendotd, formy)
 
-    elif message.text == 'Общая информация':
+   elif message.text == 'Общая информация':
 
-        markup3 = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        markup3.add('Cтруктура и органы управления образовательной организацией')
-        markup3.add('Организация образовательной деятельности')
-        markup3.add('Материально-техническое обеспечение и оснащённость образовательного процесса')
-        markup3.add('Стипендии и иные виды материальной поддержки')
-        markup3.add('Платные образовательные услуги')
-        markup3.add('Доступная среда')
-        markup3.add('Доступ к информационным системам и информационно-телекоммуникационным сетям')
-        markup3.add('Вернуться назад')
-
-        send = bot.send_message(message.chat.id, 'Что хотите узнать?', reply_markup=markup3)
-        bot.register_next_step_handler(send, obinf)
+        sendotd1 = bot.send_message(message.chat.id, 'Что хотите узнать?', reply_markup=markup3)
+        bot.register_next_step_handler(sendotd2, obinf)
 
     elif message.text == 'Контактные данные':
 
-        bot.send_message(message.chat.id, 'Тут будут контактные данные')
+        bot.send_message(message.chat.id, 'Юридический адрес: ул. Красноармейская 157, г.Благовещенск, Амурская область, 675011.\n'
+                                          'Телефоны: Учебная часть: 8(4162)77-30-06, Зам. директора по УР: 8(4162)77-30-01,\n'
+                                          'Главный бухгалтер: 8(4162)77-30-20\n'
+                                          'Администратор учебной части: Киселева Надежда Юрьевна\n'
+                                          'Адреса электронной почты: bkst2006@rambler.ru (общий)')
+
 
     elif message.text == 'Информация о поступлении':
 
-        send = bot.send_message(message.chat.id, 'Нажмите на то что хотите узнать', reply_markup=infopostup)
-        bot.register_next_step_handler(send, infopostuplenii)
+        sendotd2 = bot.send_message(message.chat.id, 'Нажмите на то что хотите узнать', reply_markup=infopostup)
+        bot.register_next_step_handler(sendotd2, infopostuplenii)
 
     elif message.text == 'Тестирование на специальность':
 
         print("new session test")
         messageChatId = int(message.chat.id)
-        print(f"userid: {messageChatId}")
+        print(f"user_id: {messageChatId}")
 
         with sqlite3.connect('.\\testBotbd.db') as db:
             cur = db.cursor()
             cur.execute("SELECT user_id FROM testBotbd WHERE user_id LIKE ?", (messageChatId,))
             check = cur.fetchone()
             if check == None:
-                cur.execute(" INSERT INTO testBotbd (user_id) VALUES(?)", (messageChatId,))
-                print("create new user line")
+                cur.execute("INSERT INTO testBotbd VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",\
+                    (messageChatId,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0))
+                print("create new user line\n")
             elif check != None:
-                cur.execute("UPDATE testBotbd SET user_id=? WHERE user_id = ?", (messageChatId, messageChatId,))
-                print("edit old user line")
+                cur.execute("UPDATE testBotbd\
+                 SET ca=?, ct=?, cv=?, vc=?, te=?, ar=?, yp=?, uc=?, gd=?, sc=?, cs=?, ms=?, cp=?, cd=?, mg=?, user_id=?\
+                  WHERE user_id = ?",(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, messageChatId, messageChatId,))
+                print("edit old user line\n")
             else:
                 print("Ошибка")
             db.commit()
-        send = bot.send_message(message.chat.id, 'Какие предметы в школе вам довались легче всего?',
+        sendotd3 = bot.send_message(message.chat.id, 'Какие предметы в школе вам довались легче всего?',
                                 reply_markup=firstquetion)
-        bot.register_next_step_handler(send, testing)
+        bot.register_next_step_handler(sendotd3, testing1_1)
     else:
         bot.send_message(message.chat.id, 'Ошибка, двигайтесь по кнопкам', reply_markup=markup)
 
 
 def infopostuplenii(message):
     if message.text == '9 классов очно':
-
-        send = bot.send_message(message.chat.id, 'Выберите основу о которой хотите узнать.', reply_markup=budgetplat1)
-        bot.register_next_step_handler(send, devyatklassov)
+        sendinf = bot.send_message(message.chat.id, 'Выберите основу о которой хотите узнать.', reply_markup=budgetplat1)
+        bot.register_next_step_handler(sendinf, devyatklassov)
 
     elif message.text == '11 классов очно':
-
-        send = bot.send_message(message.chat.id, 'Выберите то, с чем хотите ознакомится.', reply_markup=budgetplat2)
-        bot.register_next_step_handler(send, odinatsyatklassov)
+        sendinf1 = bot.send_message(message.chat.id, 'Выберите то, с чем хотите ознакомится.', reply_markup=budgetplat2)
+        bot.register_next_step_handler(sendinf1, odinatsyatklassov)
 
     elif message.text == 'Заочно':
-
-        budgetplat3 = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        budgetplat3.add('Вернуться назад')
-
-        send = bot.send_message(message.chat.id, 'Незаполненная форма 1', reply_markup=budgetplat3)
-        bot.register_next_step_handler(send, infopostuplenii)
+        sendinf2 = bot.send_message(message.chat.id, 'Информация о поступлении заочно:{данные будут актуализированы}', reply_markup=budgetplat3)
+        bot.register_next_step_handler(sendinf2, infopostuplenii)
 
     elif message.text == 'Вернуться назад':
-        send = bot.send_message(message.chat.id, 'Вы вернулись назад.', reply_markup=markup)
-        bot.register_next_step_handler(send, otdelenie)
+        sendinf3 = bot.send_message(message.chat.id, 'Вы вернулись назад.', reply_markup=markup)
+        bot.register_next_step_handler(sendinf3, otdelenie)
 
     else:
         bot.send_message(message.chat.id, 'Ошибка, двигайтесь по кнопкам', reply_markup=markup)
@@ -298,27 +298,16 @@ def infopostuplenii(message):
 
 def devyatklassov(message):
     if message.text == 'Бюджетная основа':
-
-        devklss = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        devk1 = 'Список документов при поступлении'
-        devk2 = 'Ознакомиться со специальностями'
-        devk3 = 'Вернуться назад'
-        devklss.add(devk1)
-        devklss.add(devk2)
-        devklss.add(devk3)
-
-        devkk = bot.send_message(message.chat.id, 'Выберите то, с чем хотите ознакомится.', reply_markup=devklss)
-        bot.register_next_step_handler(devkk, devklasspodpunktB)
+        senddev = bot.send_message(message.chat.id, 'Выберите то, с чем хотите ознакомится.', reply_markup=devklss)
+        bot.register_next_step_handler(senddev, devklasspodpunktB)
 
     elif message.text == 'Платная основа':
-
-        devvk = bot.send_message(message.chat.id, 'Выберите то, с чем хотите ознакомится.', reply_markup=devklsss)
-        bot.register_next_step_handler(devvk, devklasspodpunktP)
+        senddev1 = bot.send_message(message.chat.id, 'Выберите то, с чем хотите ознакомится.', reply_markup=devklsss)
+        bot.register_next_step_handler(senddev1, devklasspodpunktP)
 
     elif message.text == 'Вернуться назад':
-
-        rety = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=infopostup)
-        bot.register_next_step_handler(rety, infopostuplenii)
+        senddev = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=infopostup)
+        bot.register_next_step_handler(senddev2, infopostuplenii)
 
     else:
         bot.send_message(message.chat.id, 'Ошибка, двигайтесь по кнопкам', reply_markup=markup)
@@ -326,25 +315,21 @@ def devyatklassov(message):
 
 def devklasspodpunktB(message):
     if message.text == 'Список документов при поступлении':
-
-        reg = bot.send_message(message.chat.id, spisokdoks)
-        bot.register_next_step_handler(reg, devklasspodpunktB)
+        senddekl = bot.send_message(message.chat.id, spisokdoks)
+        bot.register_next_step_handler(senddekl, devklasspodpunktB)
 
     elif message.text == 'Ознакомиться со специальностями':
-
         bot.send_message(message.chat.id, 'Специальности первого отделения:')
         bot.send_message(message.chat.id, pervoeotdel)
         bot.send_message(message.chat.id, 'Специальности второго отедления:')
-        send = bot.send_message(message.chat.id, vtoroeotdel)
-
-        bot.send_message(message.chat.id, 'Введите цифру специальности о которой хотите узнать:',
+        bot.send_message(message.chat.id, vtoroeotdel)
+        senddekl1 = bot.send_message(message.chat.id, 'Введите цифру специальности о которой хотите узнать:',
                          reply_markup=types.ReplyKeyboardRemove())
-        bot.register_next_step_handler(send, informforspec1)
+        bot.register_next_step_handler(senddekl1, informforspec1)
 
     elif message.text == 'Вернуться назад':
-
-        regg = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=budgetplat1)
-        bot.register_next_step_handler(regg, devyatklassov)
+        senddekl2 = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=budgetplat1)
+        bot.register_next_step_handler(senddekl2, devyatklassov)
 
     else:
         bot.send_message(message.chat.id, 'Ошибка, двигайтесь по кнопкам', reply_markup=markup)
@@ -352,25 +337,24 @@ def devklasspodpunktB(message):
 
 def devklasspodpunktP(message):
     if message.text == 'Список документов при поступлении':
-        regggg = bot.send_message(message.chat.id, spisokdoks)
-        bot.register_next_step_handler(regggg, devklasspodpunktP)
+        senddeklb = bot.send_message(message.chat.id, spisokdoks)
+        bot.register_next_step_handler(senddeklb, devklasspodpunktP)
 
     elif message.text == 'Ознакомиться со специальностями':
         bot.send_message(message.chat.id, 'Специальности первого отделения:')
         bot.send_message(message.chat.id, pervoeotdel)
         bot.send_message(message.chat.id, 'Специальности второго отедления:')
-        send = bot.send_message(message.chat.id, vtoroeotdel)
-
-        bot.send_message(message.chat.id, 'Введите цифру специальности о которой хотите узнать:',
+        bot.send_message(message.chat.id, vtoroeotdel)
+        senddeklb1 = bot.send_message(message.chat.id, 'Введите цифру специальности о которой хотите узнать:',
                          reply_markup=types.ReplyKeyboardRemove())
-        bot.register_next_step_handler(send, informforspec1)
+        bot.register_next_step_handler(senddeklb1, informforspec1)
 
     elif message.text == 'Стоимость обучения':
-        bot.send_message(message.chat.id, 'Незаполненная форма 2')
-
+        senddeklb2 = bot.send_message(message.chat.id, 'Стоимость обучения на базе поступления: {Данные будут актуализированы}')
+        bot.register_next_step_handler(senddeklb2, devklasspodpunktP)
     elif message.text == 'Вернуться назад':
-        reggg = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=budgetplat1)
-        bot.register_next_step_handler(reggg, devyatklassov)
+        senddeklb3 = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=budgetplat1)
+        bot.register_next_step_handler(senddeklb3, devyatklassov)
 
     else:
         bot.send_message(message.chat.id, 'Ошибка, двигайтесь по кнопкам', reply_markup=markup)
@@ -378,28 +362,27 @@ def devklasspodpunktP(message):
 
 def odinatsyatklassov(message):
     if message.text == 'Поступление на базе 9 классов':
-        bot.send_message(message.chat.id, 'Незаполненная форма 3')
+        bot.send_message(message.chat.id, 'Если Вы закончили 11 классов, вы можете поступить на базе 9 классов на бюджетную основу.')
 
     elif message.text == 'Список документов на поступление':
-        reggggg = bot.send_message(message.chat.id, spisokdoks)
-        bot.register_next_step_handler(reggggg, odinatsyatklassov)
+        sendodi = bot.send_message(message.chat.id, spisokdoks)
+        bot.register_next_step_handler(sendodi, odinatsyatklassov)
 
     elif message.text == 'Информация по специальностям':
         bot.send_message(message.chat.id, 'Специальности первого отделения:')
         bot.send_message(message.chat.id, pervoeotdel)
         bot.send_message(message.chat.id, 'Специальности второго отедления:')
-        send = bot.send_message(message.chat.id, vtoroeotdel)
-
-        bot.send_message(message.chat.id, 'Введите цифру специальности о которой хотите узнать:',
+        bot.send_message(message.chat.id, vtoroeotdel)
+        sendodi1 = bot.send_message(message.chat.id, 'Введите цифру специальности о которой хотите узнать:',
                          reply_markup=types.ReplyKeyboardRemove())
-        bot.register_next_step_handler(send, informforspec1)
+        bot.register_next_step_handler(sendodi1, informforspec1)
 
     elif message.text == 'Стоимость обучения':
-        bot.send_message(message.chat.id, 'Незаполненная форма 4')
+        bot.send_message(message.chat.id, 'Стоимость обучения на базе поступления: {Данные будут актуализированы}')
 
     elif message.text == 'Вернуться назад':
-        reggr = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=infopostup)
-        bot.register_next_step_handler(reggr, infopostuplenii)
+        sendodi2 = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=infopostup)
+        bot.register_next_step_handler(sendodi2, infopostuplenii)
 
     else:
         bot.send_message(message.chat.id, 'Ошибка, двигайтесь по кнопкам', reply_markup=markup)
@@ -534,40 +517,35 @@ def obinf(message):
                          reply_markup=markup)
 
     elif message.text == 'Вернуться назад':
-        send = bot.send_message(message.chat.id, 'Вы вернулись назад.', reply_markup=markup)
-        bot.register_next_step_handler(send, otdelenie)
+        sendodin = bot.send_message(message.chat.id, 'Вы вернулись назад.', reply_markup=markup)
+        bot.register_next_step_handler(sendodin, otdelenie)
 
     else:
         bot.send_message(message.chat.id, 'Ошибка', reply_markup=markup)
 
 
 def formy(message):
-    markup2 = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup2.add(types.KeyboardButton('Узнать больше о специальностях'))
-    markup2.add(types.KeyboardButton('Вернуться к началу'))
-
     if message.text == 'Очная':
-
         bot.send_message(message.chat.id, 'Специальности первого отделения:')
         bot.send_message(message.chat.id, pervoeotdel)
         bot.send_message(message.chat.id, 'Специальности второго отделения:')
-        send3 = bot.send_message(message.chat.id, vtoroeotdel, reply_markup=markup2)
-        bot.send_message(message.chat.id, 'Введите цифру специальности о которой хотите узнать:',
+        bot.send_message(message.chat.id, vtoroeotdel, reply_markup=markup2)
+        sendform = bot.send_message(message.chat.id, 'Введите цифру специальности о которой хотите узнать:',
                          reply_markup=types.ReplyKeyboardRemove())
-        bot.register_next_step_handler(send3, informforspec1)
+        bot.register_next_step_handler(sendform, informforspec1)
 
     elif message.text == 'Заочное':
         bot.send_message(message.chat.id, 'Специальности заочного отделения:')
-        send4 = bot.send_message(message.chat.id, zaochnaya, reply_markup=markup2)
-        bot.register_next_step_handler(send4, spec2)
+        sendform1 = bot.send_message(message.chat.id, zaochnaya, reply_markup=markup2)
+        bot.register_next_step_handler(sendform1, spec2)
 
     elif message.text == 'Переподготовка/Повышение квалификации':
         bot.send_message(message.chat.id, 'Специальности Переподготовки/Повышения квалификации')
         bot.send_message(message.chat.id, perepodgotovka, reply_markup=markup)
 
     elif message.text == 'Вернуться назад':
-        backss = bot.send_message(message.chat.id, 'Вы вернулись назад.', reply_markup=markup1)
-        bot.register_next_step_handler(backss, otdelenie)
+        sendform2 = bot.send_message(message.chat.id, 'Вы вернулись назад.', reply_markup=markup1)
+        bot.register_next_step_handler(sendform2, otdelenie)
 
     else:
         bot.send_message(message.chat.id, 'Вы вернулись в начало', reply_markup=markup)
@@ -578,8 +556,8 @@ def spec1(message):
         bot.send_message(message.chat.id, 'Вы вернулись в начало', reply_markup=markup)
 
     elif message.text == 'Узнать больше о специальностях':
-        send6 = bot.send_message(message.chat.id, 'Введите цифру специальности, о которой хотите узнать')
-        bot.register_next_step_handler(send6, informforspec1)
+        sendspec = bot.send_message(message.chat.id, 'Введите цифру специальности, о которой хотите узнать')
+        bot.register_next_step_handler(sendspec, informforspec1)
 
     else:
         bot.send_message(message.chat.id, 'Вы вернулись в начало', reply_markup=markup)
@@ -590,8 +568,8 @@ def spec2(message):
         bot.send_message(message.chat.id, 'Вы вернулись в начало', reply_markup=markup)
 
     elif message.text == 'Узнать больше о специальностях':
-        send7 = bot.send_message(message.chat.id, 'Введите цифру специальности, о которой хотите узнать')
-        bot.register_next_step_handler(send7, informforspec1)
+        sendspec2 = bot.send_message(message.chat.id, 'Введите цифру специальности, о которой хотите узнать')
+        bot.register_next_step_handler(sendspec2, informforspec1)
 
     else:
         bot.send_message(message.chat.id, 'Вы вернулись в начало', reply_markup=markup)
@@ -711,7 +689,6 @@ def informforspec2(message):
         bot.send_message(message.chat.id, 'Ошибка! Вы вернулись в начало', reply_markup=markup)
 
 ####################################################ТЕСТ#############################################################
-
 def uppdute(name, no1, no2, no3, no4, no5, no6, no7, no8, no9, no10, no11, no12, no13, no14, no15, messageChatId):
     with sqlite3.connect('.\\testBotbd.db') as db:
         cur = db.cursor()
@@ -727,157 +704,259 @@ def uppdute(name, no1, no2, no3, no4, no5, no6, no7, no8, no9, no10, no11, no12,
                      no15 + newcheck[14], messageChatId,))
         db.commit()
 
-def testing(message):
+def testing1_1(message):
     messageChatId = int(message.chat.id)
 
-    with sqlite3.connect('.\\testBotbd.db') as db:
-        cur = db.cursor()
-        if message.text == 'Математика':
-            cur.execute("SELECT ca, ct, cv, vc, te, ar, yp, uc, gd, sc, cs, ms, cp, cd, mg\
-             FROM testBotbd WHERE user_id = ?", (messageChatId,))
-            cur.execute("UPDATE testBotbd SET ca=1, ct=1, cv=1, vc=0, te=0, ar=0, yp=0, uc=0, gd=0, sc=1, cs=1, ms=1, cp=1, cd=1, mg=1\
-             WHERE user_id = ?", (messageChatId,))
-            db.commit()
+    if message.text == 'Математика':
+        uppdute("Математика", 1,1,1,0,0,0,0,0,0,1,1,1,1,1,1, messageChatId)
+        sendtest = bot.send_message(message.chat.id, \
+            'Выбрано один из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest, testing1_2)
 
-            send = bot.send_message(message.chat.id, 'В каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
-            bot.register_next_step_handler(send, testing2)
+    elif message.text == 'Информатика':
+        uppdute("Информатика", 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0, messageChatId)
+        sendtest1 = bot.send_message(message.chat.id, \
+            'Выбрано один из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest1, testing1_2)
 
-        elif message.text == 'Информатика':
-            cur.execute("SELECT ca, ct, cv, vc, te, ar, yp, uc, gd, sc, cs, ms, cp, cd, mg\
-             FROM testBotbd WHERE user_id = ?", (messageChatId,))
-            cur.execute("UPDATE testBotbd SET ca=1, ct=0, cv=0, vc=0, te=0, ar=0, yp=0, uc=0, gd=0, sc=0, cs=0, ms=0, cp=0, cd=0, mg=0\
-             WHERE user_id = ?", (messageChatId,))
-            db.commit()
+    elif message.text == 'Физика':
+        uppdute("Физика", 0,1,1,1,1,1,1,0,0,1,1,1,1,1,1, messageChatId)
+        sendtest2 = bot.send_message(message.chat.id, \
+            'Выбрано один из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest2, testing1_2)
 
-            send = bot.send_message(message.chat.id, 'В каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
-            bot.register_next_step_handler(send, testing2)
+    elif message.text == 'Обществознание':
+        uppdute("Обществознание", 0,0,0,0,0,0,1,1,0,0,0,0,0,0,0, messageChatId)
+        sendtest3 = bot.send_message(message.chat.id, \
+            'Выбрано один из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest3, testing1_2)
 
-        elif message.text == 'Физика':
-            cur.execute("SELECT ca, ct, cv, vc, te, ar, yp, uc, gd, sc, cs, ms, cp, cd, mg\
-             FROM testBotbd WHERE user_id = ?", (messageChatId,))
-            cur.execute("UPDATE testBotbd SET ca=0, ct=1, cv=1, vc=1, te=1, ar=1, yp=1, uc=0, gd=0, sc=1, cs=1, ms=1, cp=1, cd=1, mg=1\
-             WHERE user_id = ?", (messageChatId,))
-            db.commit()
+    elif message.text == 'История':
+        uppdute("История", 0,0,0,0,0,0,0,1,0,0,0,0,0,0,0, messageChatId)
+        sendtest4 = bot.send_message(message.chat.id, \
+            'Выбрано один из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest4, testing1_2)
 
-            send = bot.send_message(message.chat.id, 'В каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
-            bot.register_next_step_handler(send, testing2)
+    elif message.text == 'Литература':
+        uppdute("Литература", 0,0,0,0,0,0,0,0,1,0,0,0,0,0,0, messageChatId)
+        sendtest5 = bot.send_message(message.chat.id, \
+            'Выбрано один из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest5, testing1_2)
 
-        elif message.text == 'Обществознание':
-            cur.execute("SELECT ca, ct, cv, vc, te, ar, yp, uc, gd, sc, cs, ms, cp, cd, mg\
-             FROM testBotbd WHERE user_id = ?", (messageChatId,))
-            cur.execute("UPDATE testBotbd SET ca=0, ct=0, cv=0, vc=0, te=0, ar=0, yp=1, uc=1, gd=0, sc=0, cs=0, ms=0, cp=0, cd=0, mg=0\
-             WHERE user_id = ?", (messageChatId,))
-            db.commit()
+    elif message.text == 'Английский язык':
+        uppdute("Английский язык", 1,0,0,0,0,0,0,0,1,0,0,0,0,0,0, messageChatId)
+        sendtest6 = bot.send_message(message.chat.id, \
+            'Выбрано один из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest6, testing1_2)
 
-            send = bot.send_message(message.chat.id, 'В каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
-            bot.register_next_step_handler(send, testing2)
+    elif message.text == 'Технология':
+        uppdute("Технология", 0,1,1,1,1,1,0,0,0,1,1,1,1,1,1, messageChatId)
+        sendtest7 = bot.send_message(message.chat.id, \
+            'Выбрано один из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest7, testing1_2)
 
-        elif message.text == 'История':
-            cur.execute("SELECT ca, ct, cv, vc, te, ar, yp, uc, gd, sc, cs, ms, cp, cd, mg\
-             FROM testBotbd WHERE user_id = ?", (messageChatId,))
-            cur.execute("UPDATE testBotbd SET ca=0, ct=0, cv=0, vc=0, te=0, ar=0, yp=0, uc=1, gd=0, sc=0, cs=0, ms=0, cp=0, cd=0, mg=0\
-             WHERE user_id = ?", (messageChatId,))
-            db.commit()
+    elif message.text == 'Черчение':
+        uppdute("Черчение", 0,0,0,1,1,1,0,0,0,0,0,0,0,0,0, messageChatId)
+        sendtest8 = bot.send_message(message.chat.id, \
+            'Выбрано один из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest8, testing1_2)
 
-            send = bot.send_message(message.chat.id, 'В каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
-            bot.register_next_step_handler(send, testing2)
+    elif message.text == 'Русский язык':
+        uppdute("Русский язык", 0,0,0,0,0,0,1,1,1,0,0,0,0,0,0, messageChatId)
+        sendtest9 = bot.send_message(message.chat.id, \
+            'Выбрано один из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest9, testing1_2)
 
-        elif message.text == 'Литература':
-            cur.execute("SELECT ca, ct, cv, vc, te, ar, yp, uc, gd, sc, cs, ms, cp, cd, mg\
-             FROM testBotbd WHERE user_id = ?", (messageChatId,))
-            cur.execute("UPDATE testBotbd SET ca=0, ct=0, cv=0, vc=0, te=0, ar=0, yp=0, uc=0, gd=1, sc=0, cs=0, ms=0, cp=0, cd=0, mg=0\
-             WHERE user_id = ?", (messageChatId,))
-            db.commit()
+    elif message.text == 'Вернуться назад':
+        sendtest10 = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=markup)
+        bot.register_next_step_handler(sendtest10, otdelenie)
+    else:
+        sendtest11 = bot.send_message(message.chat.id, 'Ошибка! Выберите ответ предложенный на кнопках ниже')
+        bot.register_next_step_handler(sendtest11, testing1_1)
 
-            send = bot.send_message(message.chat.id, 'В каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
-            bot.register_next_step_handler(send, testing2)
+def testing1_2(message):
+    messageChatId = int(message.chat.id)
 
-        elif message.text == 'Английский язык':
-            cur.execute("SELECT ca, ct, cv, vc, te, ar, yp, uc, gd, sc, cs, ms, cp, cd, mg\
-             FROM testBotbd WHERE user_id = ?", (messageChatId,))
-            cur.execute("UPDATE testBotbd SET ca=1, ct=0, cv=0, vc=0, te=0, ar=0, yp=0, uc=0, gd=1, sc=0, cs=0, ms=0, cp=0, cd=0, mg=0\
-             WHERE user_id = ?", (messageChatId,))
-            db.commit()
+    if message.text == 'Математика':
+        uppdute("Математика", 1,1,1,0,0,0,0,0,0,1,1,1,1,1,1, messageChatId)
+        sendtest = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest, testing1_3)
 
-            send = bot.send_message(message.chat.id, 'В каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
-            bot.register_next_step_handler(send, testing2)
+    elif message.text == 'Информатика':
+        uppdute("Информатика", 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0, messageChatId)
+        sendtest1 = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest1, testing1_3)
 
-        elif message.text == 'Технология':
-            cur.execute("SELECT ca, ct, cv, vc, te, ar, yp, uc, gd, sc, cs, ms, cp, cd, mg\
-             FROM testBotbd WHERE user_id = ?", (messageChatId,))
-            cur.execute("UPDATE testBotbd SET ca=0, ct=1, cv=1, vc=1, te=1, ar=1, yp=0, uc=0, gd=1, sc=1, cs=1, ms=1, cp=1, cd=1, mg=1\
-             WHERE user_id = ?", (messageChatId,))
-            db.commit()
+    elif message.text == 'Физика':
+        uppdute("Физика", 0,1,1,1,1,1,1,0,0,1,1,1,1,1,1, messageChatId)
+        sendtest2 = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest2, testing1_3)
 
-            send = bot.send_message(message.chat.id, 'В каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
-            bot.register_next_step_handler(send, testing2)
+    elif message.text == 'Обществознание':
+        uppdute("Обществознание", 0,0,0,0,0,0,1,1,0,0,0,0,0,0,0, messageChatId)
+        sendtest3 = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest3, testing1_3)
 
-        elif message.text == 'Черчение':
-            cur.execute("SELECT ca, ct, cv, vc, te, ar, yp, uc, gd, sc, cs, ms, cp, cd, mg\
-             FROM testBotbd WHERE user_id = ?", (messageChatId,))
-            cur.execute("UPDATE testBotbd SET ca=0, ct=0, cv=0, vc=1, te=1, ar=1, yp=0, uc=0, gd=0, sc=0, cs=0, ms=0, cp=0, cd=0, mg=0\
-             WHERE user_id = ?", (messageChatId,))
-            db.commit()
+    elif message.text == 'История':
+        uppdute("История", 0,0,0,0,0,0,0,1,0,0,0,0,0,0,0, messageChatId)
+        sendtest4 = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest4, testing1_3)
 
-            send = bot.send_message(message.chat.id, 'В каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
-            bot.register_next_step_handler(send, testing2)
+    elif message.text == 'Литература':
+        uppdute("Литература", 0,0,0,0,0,0,0,0,1,0,0,0,0,0,0, messageChatId)
+        sendtest5 = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest5, testing1_3)
 
-        elif message.text == 'Русский язык':
-            cur.execute("SELECT ca, ct, cv, vc, te, ar, yp, uc, gd, sc, cs, ms, cp, cd, mg\
-             FROM testBotbd WHERE user_id = ?", (messageChatId,))
-            cur.execute("UPDATE testBotbd SET ca=0, ct=0, cv=0, vc=1, te=0, ar=0, yp=1, uc=1, gd=1, sc=0, cs=0, ms=0, cp=0, cd=0, mg=0\
-             WHERE user_id = ?", (messageChatId,))
-            db.commit()
+    elif message.text == 'Английский язык':
+        uppdute("Английский язык", 1,0,0,0,0,0,0,0,1,0,0,0,0,0,0, messageChatId)
+        sendtest6 = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest6, testing1_3)
 
-            send = bot.send_message(message.chat.id, 'В каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
-            bot.register_next_step_handler(send, testing2)
+    elif message.text == 'Технология':
+        uppdute("Технология", 0,1,1,1,1,1,0,0,0,1,1,1,1,1,1, messageChatId)
+        sendtest7 = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest7, testing1_3)
 
-        elif message.text == 'Вернуться назад':
-            send = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=markup)
-            bot.register_next_step_handler(send, otdelenie)
+    elif message.text == 'Черчение':
+        uppdute("Черчение", 0,0,0,1,1,1,0,0,0,0,0,0,0,0,0, messageChatId)
+        sendtest8 = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest8, testing1_3)
 
-        else:
-            send = bot.send_message(message.chat.id, 'Ошибка! Выберите ответ предложенный на кнопках ниже')
-            bot.register_next_step_handler(send, testing)
+    elif message.text == 'Русский язык':
+        uppdute("Русский язык", 0,0,0,0,0,0,1,1,1,0,0,0,0,0,0, messageChatId)
+        sendtest9 = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакие предметы в школе вам довались легче всего?', reply_markup=firstquetion)
+        bot.register_next_step_handler(sendtest9, testing1_3)
 
-def testing2(message):
+    elif message.text == 'Вернуться назад':
+        sendtest10 = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=markup)
+        bot.register_next_step_handler(sendtest10, otdelenie)
+    else:
+        sendtest11 = bot.send_message(message.chat.id, 'Ошибка! Выберите ответ предложенный на кнопках ниже')
+        bot.register_next_step_handler(sendtest11, testing1_2)
+
+def testing1_3(message):
+    messageChatId = int(message.chat.id)
+
+    if message.text == 'Математика':
+        uppdute("Математика", 1,1,1,0,0,0,0,0,0,1,1,1,1,1,1, messageChatId)
+        sendtest = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nВ каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
+        bot.register_next_step_handler(sendtest, testing2_1)
+
+    elif message.text == 'Информатика':
+        uppdute("Информатика", 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0, messageChatId)
+        sendtest1 = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nВ каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
+        bot.register_next_step_handler(sendtest1, testing2_1)
+
+    elif message.text == 'Физика':
+        uppdute("Физика", 0,1,1,1,1,1,1,0,0,1,1,1,1,1,1, messageChatId)
+        sendtest2 = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nВ каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
+        bot.register_next_step_handler(sendtest2, testing2_1)
+
+    elif message.text == 'Обществознание':
+        uppdute("Обществознание", 0,0,0,0,0,0,1,1,0,0,0,0,0,0,0, messageChatId)
+        sendtest3 = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nВ каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
+        bot.register_next_step_handler(sendtest3, testing2_1)
+
+    elif message.text == 'История':
+        uppdute("История", 0,0,0,0,0,0,0,1,0,0,0,0,0,0,0, messageChatId)
+        sendtest4 = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nВ каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
+        bot.register_next_step_handler(sendtest4, testing2_1)
+
+    elif message.text == 'Литература':
+        uppdute("Литература", 0,0,0,0,0,0,0,0,1,0,0,0,0,0,0, messageChatId)
+        sendtest5 = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nВ каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
+        bot.register_next_step_handler(sendtest5, testing2_1)
+
+    elif message.text == 'Английский язык':
+        uppdute("Английский язык", 1,0,0,0,0,0,0,0,1,0,0,0,0,0,0, messageChatId)
+        sendtest6 = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nВ каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
+        bot.register_next_step_handler(sendtest6, testing2_1)
+
+    elif message.text == 'Технология':
+        uppdute("Технология", 0,1,1,1,1,1,0,0,0,1,1,1,1,1,1, messageChatId)
+        sendtest7 = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nВ каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
+        bot.register_next_step_handler(sendtest7, testing2_1)
+
+    elif message.text == 'Черчение':
+        uppdute("Черчение", 0,0,0,1,1,1,0,0,0,0,0,0,0,0,0, messageChatId)
+        sendtest8 = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nВ каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
+        bot.register_next_step_handler(sendtest8, testing2_1)
+
+    elif message.text == 'Русский язык':
+        uppdute("Русский язык", 0,0,0,0,0,0,1,1,1,0,0,0,0,0,0, messageChatId)
+        sendtest9 = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nВ каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
+        bot.register_next_step_handler(sendtest9, testing2_1)
+
+    elif message.text == 'Вернуться назад':
+        sendtest10 = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=markup)
+        bot.register_next_step_handler(sendtest10, otdelenie)
+    else:
+        sendtest11 = bot.send_message(message.chat.id, 'Ошибка! Выберите ответ предложенный на кнопках ниже')
+        bot.register_next_step_handler(sendtest11, testing1_3)
+
+def testing2_1(message):
     messageChatId = int(message.chat.id)
 
     if message.text == "Работать с клиентами":
-        uppdute("Работать с клиентами", 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, messageChatId)
-        send = bot.send_message(message.chat.id, 'Какими личными качествами вы обладаете?', reply_markup=personal)
-        bot.register_next_step_handler(send, testing3)
+        uppdute("Работать с клиентами", 0,0,0,0,0,0,1,1,1,0,0,0,0,0,0, messageChatId)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано один из двух\nВ каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
+        bot.register_next_step_handler(send, testing2_2)
 
     elif message.text == 'Работать на открытом воздухе':
-        uppdute('Работать на открытом воздухе', 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, messageChatId)
+        uppdute('Работать на открытом воздухе', 0,1,1,1,1,0,0,0,0,0,1,0,1,1,0, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Какими личными качествами вы обладаете?', reply_markup=personal)
-        bot.register_next_step_handler(send, testing3)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано один из двух\nВ каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
+        bot.register_next_step_handler(send, testing2_2)
 
     elif message.text == 'Работать одному':
-        uppdute('Работать одному', 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, messageChatId)
+        uppdute('Работать одному', 1,0,0,0,0,0,0,1,0,1,0,1,0,0,0, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Какими личными качествами вы обладаете?', reply_markup=personal)
-        bot.register_next_step_handler(send, testing3)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано один из двух\nВ каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
+        bot.register_next_step_handler(send, testing2_2)
 
     elif message.text == 'Работать с высокотехнологичным оборудованием':
-        uppdute('Работать с высокотехнологичным оборудованием', 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1,
-                messageChatId)
+        uppdute('Работать с высокотехнологичным оборудованием', 1,1,1,1,1,1,0,0,0,1,1,1,1,1,1, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Какими личными качествами вы обладаете?', reply_markup=personal)
-        bot.register_next_step_handler(send, testing3)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано один из двух\nВ каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
+        bot.register_next_step_handler(send, testing2_2)
 
     elif message.text == 'Работать в команде':
-        uppdute('Работать в команде', 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, messageChatId)
+        uppdute('Работать в команде', 0,1,1,1,1,1,1,0,1,0,1,0,1,1,1, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Какими личными качествами вы обладаете?', reply_markup=personal)
-        bot.register_next_step_handler(send, testing3)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано один из двух\nВ каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
+        bot.register_next_step_handler(send, testing2_2)
 
     elif message.text == 'Работать в помещении':
-        uppdute('Работать в помещении', 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, messageChatId)
+        uppdute('Работать в помещении', 1,0,0,0,0,1,1,1,1,1,0,1,0,0,1, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Какими личными качествами вы обладаете?', reply_markup=personal)
-        bot.register_next_step_handler(send, testing3)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано один из двух\nВ каких условиях вы хотели бы работать?', reply_markup=ysloviajob)
+        bot.register_next_step_handler(send, testing2_2)
 
     elif message.text == 'Вернуться назад':
         send = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=markup)
@@ -885,70 +964,132 @@ def testing2(message):
 
     else:
         send = bot.send_message(message.chat.id, 'Ошибка! Выберите ответ предложенный на кнопках ниже')
-        bot.register_next_step_handler(send, testing2)
+        bot.register_next_step_handler(send, testing2_1)
 
-def testing3(message):
+def testing2_2(message):
+    messageChatId = int(message.chat.id)
+
+    if message.text == "Работать с клиентами":
+        uppdute("Работать с клиентами", 0,0,0,0,0,0,1,1,1,0,0,0,0,0,0, messageChatId)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из двух\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_1)
+
+    elif message.text == 'Работать на открытом воздухе':
+        uppdute('Работать на открытом воздухе', 0,1,1,1,1,0,0,0,0,0,1,0,1,1,0, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из двух\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_1)
+
+    elif message.text == 'Работать одному':
+        uppdute('Работать одному', 1,0,0,0,0,0,0,1,0,1,0,1,0,0,0, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из двух\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_1)
+
+    elif message.text == 'Работать с высокотехнологичным оборудованием':
+        uppdute('Работать с высокотехнологичным оборудованием', 1,1,1,1,1,1,0,0,0,1,1,1,1,1,1, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из двух\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_1)
+
+    elif message.text == 'Работать в команде':
+        uppdute('Работать в команде', 0,1,1,1,1,1,1,0,1,0,1,0,1,1,1, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из двух\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_1)
+
+    elif message.text == 'Работать в помещении':
+        uppdute('Работать в помещении', 1,0,0,0,0,1,1,1,1,1,0,1,0,0,1, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из двух\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_1)
+
+    elif message.text == 'Вернуться назад':
+        send = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=markup)
+        bot.register_next_step_handler(send, otdelenie)
+
+    else:
+        send = bot.send_message(message.chat.id, 'Ошибка! Выберите ответ предложенный на кнопках ниже')
+        bot.register_next_step_handler(send, testing2_2)
+
+def testing3_1(message):
     messageChatId = int(message.chat.id)
 
     if message.text == "Усидчивость":
-        uppdute('Усидчивость', 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, messageChatId)
+        uppdute('Усидчивость', 1,0,0,0,0,1,0,1,1,0,0,0,0,0,0, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Какие ваши цели и ценности?', reply_markup=prestige)
-        bot.register_next_step_handler(send, testing4)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано одно из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_2)
 
     elif message.text == 'Коммуникабельность':
-        uppdute('Коммуникабельность', 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, messageChatId)
+        uppdute('Коммуникабельность', 0,0,0,0,0,0,1,1,1,0,0,0,0,0,0, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Какие ваши цели и ценности?', reply_markup=prestige)
-        bot.register_next_step_handler(send, testing4)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано одно из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_2)
 
     elif message.text == 'Любознательность':
-        uppdute('Любознательность', 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, messageChatId)
+        uppdute('Любознательность', 1,0,1,0,1,1,0,0,0,0,0,1,0,0,0, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Какие ваши цели и ценности?', reply_markup=prestige)
-        bot.register_next_step_handler(send, testing4)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано одно из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_2)
 
     elif message.text == 'Энергичность':
-        uppdute('Энергичность', 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, messageChatId)
+        uppdute('Энергичность', 0,1,0,0,0,0,0,0,0,1,1,0,1,1,0, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Какие ваши цели и ценности?', reply_markup=prestige)
-        bot.register_next_step_handler(send, testing4)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано одно из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_2)
 
     elif message.text == 'Выносливость':
-        uppdute('Выносливость', 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, messageChatId)
+        uppdute('Выносливость', 0,1,0,1,0,0,0,0,0,1,1,0,1,1,0, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Какие ваши цели и ценности?', reply_markup=prestige)
-        bot.register_next_step_handler(send, testing4)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано одно из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_2)
 
     elif message.text == 'Мобильность':
-        uppdute('Мобильность', 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, messageChatId)
+        uppdute('Мобильность', 0,1,0,0,0,0,1,0,0,1,1,0,1,1,1, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Какие ваши цели и ценности?', reply_markup=prestige)
-        bot.register_next_step_handler(send, testing4)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано одно из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_2)
 
     elif message.text == 'Сосредоточенность':
-        uppdute('Сосредоточенность', 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, messageChatId)
+        uppdute('Сосредоточенность', 1,0,0,0,0,1,0,0,0,0,0,1,0,0,0, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Какие ваши цели и ценности?', reply_markup=prestige)
-        bot.register_next_step_handler(send, testing4)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано одно из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_2)
 
     elif message.text == 'Стрессоустойчивость':
-        uppdute('Стрессоустойчивость', 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, messageChatId)
+        uppdute('Стрессоустойчивость', 0,0,0,0,0,0,1,1,1,0,0,0,0,0,0, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Какие ваши цели и ценности?', reply_markup=prestige)
-        bot.register_next_step_handler(send, testing4)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано одно из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_2)
 
     elif message.text == 'Аккуратность':
-        uppdute('Аккуратность', 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, messageChatId)
+        uppdute('Аккуратность', 0,0,1,1,1,0,0,0,0,0,0,1,0,0,1, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Какие ваши цели и ценности?', reply_markup=prestige)
-        bot.register_next_step_handler(send, testing4)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано одно из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_2)
 
     elif message.text == 'Внимательность':
-        uppdute('Внимательность', 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, messageChatId)
+        uppdute('Внимательность', 0,0,1,1,1,0,0,0,0,0,0,0,0,0,1, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Какие ваши цели и ценности?', reply_markup=prestige)
-        bot.register_next_step_handler(send, testing4)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано одно из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_2)
 
     elif message.text == 'Вернуться назад':
         send = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=markup)
@@ -956,40 +1097,207 @@ def testing3(message):
 
     else:
         send = bot.send_message(message.chat.id, 'Ошибка! Выберите ответ предложенный на кнопках ниже')
-        bot.register_next_step_handler(send, testing3)
+        bot.register_next_step_handler(send, testing3_1)
 
-def testing4(message):
+def testing3_2(message):
+    messageChatId = int(message.chat.id)
+
+    if message.text == "Усидчивость":
+        uppdute('Усидчивость', 1,0,0,0,0,1,0,1,1,0,0,0,0,0,0, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_3)
+
+    elif message.text == 'Коммуникабельность':
+        uppdute('Коммуникабельность', 0,0,0,0,0,0,1,1,1,0,0,0,0,0,0, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_3)
+
+    elif message.text == 'Любознательность':
+        uppdute('Любознательность', 1,0,1,0,1,1,0,0,0,0,0,1,0,0,0, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_3)
+
+    elif message.text == 'Энергичность':
+        uppdute('Энергичность', 0,1,0,0,0,0,0,0,0,1,1,0,1,1,0, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_3)
+
+    elif message.text == 'Выносливость':
+        uppdute('Выносливость', 0,1,0,1,0,0,0,0,0,1,1,0,1,1,0, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_3)
+
+    elif message.text == 'Мобильность':
+        uppdute('Мобильность', 0,1,0,0,0,0,1,0,0,1,1,0,1,1,1, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_3)
+
+    elif message.text == 'Сосредоточенность':
+        uppdute('Сосредоточенность', 1,0,0,0,0,1,0,0,0,0,0,1,0,0,0, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_3)
+
+    elif message.text == 'Стрессоустойчивость':
+        uppdute('Стрессоустойчивость', 0,0,0,0,0,0,1,1,1,0,0,0,0,0,0, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_3)
+
+    elif message.text == 'Аккуратность':
+        uppdute('Аккуратность', 0,0,1,1,1,0,0,0,0,0,0,1,0,0,1, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_3)
+
+    elif message.text == 'Внимательность':
+        uppdute('Внимательность', 0,0,1,1,1,0,0,0,0,0,0,0,0,0,1, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из трех\nКакими личными качествами вы обладаете?', reply_markup=personal)
+        bot.register_next_step_handler(send, testing3_3)
+
+    elif message.text == 'Вернуться назад':
+        send = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=markup)
+        bot.register_next_step_handler(send, otdelenie)
+
+    else:
+        send = bot.send_message(message.chat.id, 'Ошибка! Выберите ответ предложенный на кнопках ниже')
+        bot.register_next_step_handler(send, testing3_2)
+
+def testing3_3(message):
+    messageChatId = int(message.chat.id)
+
+    if message.text == "Усидчивость":
+        uppdute('Усидчивость', 1,0,0,0,0,1,0,1,1,0,0,0,0,0,0, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nКакие ваши цели и ценности?', reply_markup=prestige)
+        bot.register_next_step_handler(send, testing4_1)
+
+    elif message.text == 'Коммуникабельность':
+        uppdute('Коммуникабельность', 0,0,0,0,0,0,1,1,1,0,0,0,0,0,0, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nКакие ваши цели и ценности?', reply_markup=prestige)
+        bot.register_next_step_handler(send, testing4_1)
+
+    elif message.text == 'Любознательность':
+        uppdute('Любознательность', 1,0,1,0,1,1,0,0,0,0,0,1,0,0,0, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nКакие ваши цели и ценности?', reply_markup=prestige)
+        bot.register_next_step_handler(send, testing4_1)
+
+    elif message.text == 'Энергичность':
+        uppdute('Энергичность', 0,1,0,0,0,0,0,0,0,1,1,0,1,1,0, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nКакие ваши цели и ценности?', reply_markup=prestige)
+        bot.register_next_step_handler(send, testing4_1)
+
+    elif message.text == 'Выносливость':
+        uppdute('Выносливость', 0,1,0,1,0,0,0,0,0,1,1,0,1,1,0, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nКакие ваши цели и ценности?', reply_markup=prestige)
+        bot.register_next_step_handler(send, testing4_1)
+
+    elif message.text == 'Мобильность':
+        uppdute('Мобильность', 0,1,0,0,0,0,1,0,0,1,1,0,1,1,1, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nКакие ваши цели и ценности?', reply_markup=prestige)
+        bot.register_next_step_handler(send, testing4_1)
+
+    elif message.text == 'Сосредоточенность':
+        uppdute('Сосредоточенность', 1,0,0,0,0,1,0,0,0,0,0,1,0,0,0, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nКакие ваши цели и ценности?', reply_markup=prestige)
+        bot.register_next_step_handler(send, testing4_1)
+
+    elif message.text == 'Стрессоустойчивость':
+        uppdute('Стрессоустойчивость', 0,0,0,0,0,0,1,1,1,0,0,0,0,0,0, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nКакие ваши цели и ценности?', reply_markup=prestige)
+        bot.register_next_step_handler(send, testing4_1)
+
+    elif message.text == 'Аккуратность':
+        uppdute('Аккуратность', 0,0,1,1,1,0,0,0,0,0,0,1,0,0,1, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nКакие ваши цели и ценности?', reply_markup=prestige)
+        bot.register_next_step_handler(send, testing4_1)
+
+    elif message.text == 'Внимательность':
+        uppdute('Внимательность', 0,0,1,1,1,0,0,0,0,0,0,0,0,0,1, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано три из трех\nКакие ваши цели и ценности?', reply_markup=prestige)
+        bot.register_next_step_handler(send, testing4_1)
+
+    elif message.text == 'Вернуться назад':
+        send = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=markup)
+        bot.register_next_step_handler(send, otdelenie)
+
+    else:
+        send = bot.send_message(message.chat.id, 'Ошибка! Выберите ответ предложенный на кнопках ниже')
+        bot.register_next_step_handler(send, testing3_3)
+
+def testing4_1(message):
     messageChatId = int(message.chat.id)
 
     if message.text == "Саморазвитие":
-        uppdute('Саморазвитие', 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, messageChatId)
+        uppdute('Саморазвитие', 1,1,0,0,0,1,0,0,0,1,1,1,0,0,1, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Что у вас получается лучше всего?', reply_markup=likejob)
-        bot.register_next_step_handler(send, testing5)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано один из двух\nКакие ваши цели и ценности?', reply_markup=prestige)
+        bot.register_next_step_handler(send, testing4_2)
 
     elif message.text == 'Комфорт и безопасность':
-        uppdute('Комфорт и безопасность', 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, messageChatId)
+        uppdute('Комфорт и безопасность', 1,0,0,0,0,0,0,1,1,0,0,0,0,0,0, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Что у вас получается лучше всего?', reply_markup=likejob)
-        bot.register_next_step_handler(send, testing5)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано один из двух\nКакие ваши цели и ценности?', reply_markup=prestige)
+        bot.register_next_step_handler(send, testing4_2)
 
     elif message.text == 'Творчество':
-        uppdute('Творчество', 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, messageChatId)
+        uppdute('Творчество', 0,0,1,1,0,1,0,0,1,0,0,0,0,0,0, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Что у вас получается лучше всего?', reply_markup=likejob)
-        bot.register_next_step_handler(send, testing5)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано один из двух\nКакие ваши цели и ценности?', reply_markup=prestige)
+        bot.register_next_step_handler(send, testing4_2)
 
     elif message.text == 'Помощь людям':
-        uppdute('Помощь людям', 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, messageChatId)
+        uppdute('Помощь людям', 0,0,1,1,1,0,1,1,0,1,0,1,1,1,1, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Что у вас получается лучше всего?', reply_markup=likejob)
-        bot.register_next_step_handler(send, testing5)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано один из двух\nКакие ваши цели и ценности?', reply_markup=prestige)
+        bot.register_next_step_handler(send, testing4_2)
 
     elif message.text == 'Свобода и независимость':
-        uppdute('Свобода и независимость', 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, messageChatId)
+        uppdute('Свобода и независимость', 0,1,0,0,1,0,1,0,0,0,1,0,1,1,0, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'Что у вас получается лучше всего?', reply_markup=likejob)
-        bot.register_next_step_handler(send, testing5)
+        send = bot.send_message(message.chat.id, \
+            'Выбрано один из двух\nКакие ваши цели и ценности?', reply_markup=prestige)
+        bot.register_next_step_handler(send, testing4_2)
 
     elif message.text == 'Вернуться назад':
         send = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=markup)
@@ -997,50 +1305,98 @@ def testing4(message):
 
     else:
         send = bot.send_message(message.chat.id, 'Ошибка! Выберите ответ предложенный на кнопках ниже')
-        bot.register_next_step_handler(send, testing4)
+        bot.register_next_step_handler(send, testing4_1)
 
-def testing5(message):
+def testing4_2(message):
+    messageChatId = int(message.chat.id)
+
+    if message.text == "Саморазвитие":
+        uppdute('Саморазвитие', 1,1,0,0,0,1,0,0,0,1,1,1,0,0,1, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из двух\nЧто у вас получается лучше всего?', reply_markup=likejob)
+        bot.register_next_step_handler(send, testing5_1)
+
+    elif message.text == 'Комфорт и безопасность':
+        uppdute('Комфорт и безопасность', 1,0,0,0,0,0,0,1,1,0,0,0,0,0,0, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из двух\nЧто у вас получается лучше всего?', reply_markup=likejob)
+        bot.register_next_step_handler(send, testing5_1)
+
+    elif message.text == 'Творчество':
+        uppdute('Творчество', 0,0,1,1,0,1,0,0,1,0,0,0,0,0,0, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из двух\nЧто у вас получается лучше всего?', reply_markup=likejob)
+        bot.register_next_step_handler(send, testing5_1)
+
+    elif message.text == 'Помощь людям':
+        uppdute('Помощь людям', 0,0,1,1,1,0,1,1,0,1,0,1,1,1,1, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из двух\nЧто у вас получается лучше всего?', reply_markup=likejob)
+        bot.register_next_step_handler(send, testing5_1)
+
+    elif message.text == 'Свобода и независимость':
+        uppdute('Свобода и независимость', 0,1,0,0,1,0,1,0,0,0,1,0,1,1,0, messageChatId)
+
+        send = bot.send_message(message.chat.id, \
+            'Выбрано два из двух\nЧто у вас получается лучше всего?', reply_markup=likejob)
+        bot.register_next_step_handler(send, testing5_1)
+
+    elif message.text == 'Вернуться назад':
+        send = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=markup)
+        bot.register_next_step_handler(send, otdelenie)
+
+    else:
+        send = bot.send_message(message.chat.id, 'Ошибка! Выберите ответ предложенный на кнопках ниже')
+        bot.register_next_step_handler(send, testing4_2)
+
+def testing5_1(message):
     messageChatId = int(message.chat.id)
 
     if message.text == "Чинить и настраивать компьютер":
-        uppdute('Чинить и настраивать компьютер', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, messageChatId)
+        uppdute('Чинить и настраивать компьютер', 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'В детстве вы чаще всего….', reply_markup=chaildback)
-        bot.register_next_step_handler(send, testing6)
+        send = bot.send_message(message.chat.id, \
+            'В детстве вы чаще всего…', reply_markup=chaildback)
+        bot.register_next_step_handler(send, testing6_1)
 
     elif message.text == "Ремонтировать и устанавливать электрические розетки и приборы":
-        uppdute('Ремонтировать и устанавливать электрические розетки и приборы', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0,
-                0, 0, messageChatId)
+        uppdute('Ремонтировать и устанавливать электрические розетки и приборы', 0,0,0,0,0,0,0,0,0,1,0,1,0,0,0, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'В детстве вы чаще всего….', reply_markup=chaildback)
-        bot.register_next_step_handler(send, testing6)
+        send = bot.send_message(message.chat.id, \
+            'В детстве вы чаще всего…', reply_markup=chaildback)
+        bot.register_next_step_handler(send, testing6_1)
 
     elif message.text == "Заниматься творческой деятельностью, рукоделием":
-        uppdute('Заниматься творческой деятельностью, рукоделием', 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                messageChatId)
+        uppdute('Заниматься творческой деятельностью, рукоделием', 0,0,0,0,0,1,0,0,0,0,0,0,0,0,0, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'В детстве вы чаще всего….', reply_markup=chaildback)
-        bot.register_next_step_handler(send, testing6)
+        send = bot.send_message(message.chat.id, \
+            'В детстве вы чаще всего….', reply_markup=chaildback)
+        bot.register_next_step_handler(send, testing6_1)
 
     elif message.text == "Находить новые знакомства, общаться, решать конфликтные ситуации":
-        uppdute('Находить новые знакомства, общаться, решать конфликтные ситуации', 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0,
-                0, 0, 0, messageChatId)
+        uppdute('Находить новые знакомства, общаться, решать конфликтные ситуации', 0,0,0,0,0,0,0,1,1,0,0,0,0,0,0, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'В детстве вы чаще всего….', reply_markup=chaildback)
-        bot.register_next_step_handler(send, testing6)
+        send = bot.send_message(message.chat.id, \
+            'В детстве вы чаще всего…', reply_markup=chaildback)
+        bot.register_next_step_handler(send, testing6_1)
 
     elif message.text == "Помогать с благоустройством приусадебного участка":
-        uppdute('Помогать с благоустройством приусадебного участка', 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1,
-                messageChatId)
+        uppdute('Помогать с благоустройством приусадебного участка', 0,1,1,1,0,0,0,0,0,0,1,0,1,1,1, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'В детстве вы чаще всего….', reply_markup=chaildback)
-        bot.register_next_step_handler(send, testing6)
+        send = bot.send_message(message.chat.id, \
+            'В детстве вы чаще всего…', reply_markup=chaildback)
+        bot.register_next_step_handler(send, testing6_1)
 
     elif message.text == "Помогать с ремонтом":
-        uppdute('Помогать с ремонтом', 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, messageChatId)
+        uppdute('Помогать с ремонтом', 0,0,0,0,1,0,1,0,0,0,0,0,0,0,0, messageChatId)
 
-        send = bot.send_message(message.chat.id, 'В детстве вы чаще всего….', reply_markup=chaildback)
-        bot.register_next_step_handler(send, testing6)
+        send = bot.send_message(message.chat.id, \
+            'В детстве вы чаще всего…', reply_markup=chaildback)
+        bot.register_next_step_handler(send, testing6_1)
 
     elif message.text == 'Вернуться назад':
         send = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=markup)
@@ -1048,52 +1404,52 @@ def testing5(message):
 
     else:
         send = bot.send_message(message.chat.id, 'Ошибка! Выберите ответ предложенный на кнопках ниже')
-        bot.register_next_step_handler(send, testing5)
+        bot.register_next_step_handler(send, testing5_1)
 
-def testing6(message):
+def testing6_1(message):
     messageChatId = int(message.chat.id)
 
     if message.text == "Играл(а) в компьютерные игры":
         uppdute('Играл(а) в компьютерные игры', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, messageChatId)
 
         send = bot.send_message(message.chat.id, 'Какая выставка меня больше привлечёт', reply_markup=vistavka)
-        bot.register_next_step_handler(send, testing7)
+        bot.register_next_step_handler(send, testing7_1)
 
     elif message.text == "Играл(а) в конструктор":
         uppdute('Играл(а) в конструктор', 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, messageChatId)
 
         send = bot.send_message(message.chat.id, 'Какая выставка меня больше привлечёт', reply_markup=vistavka)
-        bot.register_next_step_handler(send, testing7)
+        bot.register_next_step_handler(send, testing7_1)
 
     elif message.text == "Гулял(а) с друзьями":
         uppdute('Гулял(а) с друзьями', 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, messageChatId)
 
         send = bot.send_message(message.chat.id, 'Какая выставка меня больше привлечёт', reply_markup=vistavka)
-        bot.register_next_step_handler(send, testing7)
+        bot.register_next_step_handler(send, testing7_1)
 
     elif message.text == "Играл(а) в песочнице":
         uppdute('Играл(а) в песочнице', 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, messageChatId)
 
         send = bot.send_message(message.chat.id, 'Какая выставка меня больше привлечёт', reply_markup=vistavka)
-        bot.register_next_step_handler(send, testing7)
+        bot.register_next_step_handler(send, testing7_1)
 
     elif message.text == "Играл(а) с железной дорогой, машинками":
         uppdute('Играл(а) с железной дорогой, машинками', 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, messageChatId)
 
         send = bot.send_message(message.chat.id, 'Какая выставка меня больше привлечёт', reply_markup=vistavka)
-        bot.register_next_step_handler(send, testing7)
+        bot.register_next_step_handler(send, testing7_1)
 
     elif message.text == "Играл(а) с куклами, в дочки-матери":
         uppdute('Играл(а) с куклами, в дочки-матери', 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, messageChatId)
 
         send = bot.send_message(message.chat.id, 'Какая выставка меня больше привлечёт', reply_markup=vistavka)
-        bot.register_next_step_handler(send, testing7)
+        bot.register_next_step_handler(send, testing7_1)
 
     elif message.text == "Занимался(ась) творчеством":
         uppdute('Занимался(ась) творчеством', 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, messageChatId)
 
         send = bot.send_message(message.chat.id, 'Какая выставка меня больше привлечёт', reply_markup=vistavka)
-        bot.register_next_step_handler(send, testing7)
+        bot.register_next_step_handler(send, testing7_1)
 
     elif message.text == 'Вернуться назад':
         send = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=markup)
@@ -1101,53 +1457,40 @@ def testing6(message):
 
     else:
         send = bot.send_message(message.chat.id, 'Ошибка! Выберите ответ предложенный на кнопках ниже')
-        bot.register_next_step_handler(send, testing6)
+        bot.register_next_step_handler(send, testing6_1)
 
-def testing7(message):
+def testing7_1(message):
     messageChatId = int(message.chat.id)
 
     if message.text == "Научная выставка":
-        uppdute('Научная выставка', 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, messageChatId)
+        uppdute('Научная выставка', 1,0,1,1,1,0,0,0,0,0,1,1,0,0,0, messageChatId)
 
         send = bot.send_message(message.chat.id, 'Мне интереснее беседовать о:', reply_markup=besedio)
-        bot.register_next_step_handler(send, testing8)
-
-    elif message.text == "Творческая выставка":
-        uppdute('Творческая выставка', 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, messageChatId)
-
-        send = bot.send_message(message.chat.id, 'Мне интереснее беседовать о:', reply_markup=besedio)
-        bot.register_next_step_handler(send, testing8)
-
-    elif message.text == "Историческая выставка":
-        uppdute('Историческая выставка', 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, messageChatId)
-
-        send = bot.send_message(message.chat.id, 'Мне интереснее беседовать о:', reply_markup=besedio)
-        bot.register_next_step_handler(send, testing8)
+        bot.register_next_step_handler(send, testing8_1)
 
     elif message.text == "Выставка архитектуры":
-        uppdute('Выставка архитектуры', 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, messageChatId)
+        uppdute('Выставка архитектуры', 0,1,0,0,0,1,0,0,0,0,0,0,0,0,0, messageChatId)
 
         send = bot.send_message(message.chat.id, 'Мне интереснее беседовать о:', reply_markup=besedio)
-        bot.register_next_step_handler(send, testing8)
+        bot.register_next_step_handler(send, testing8_1)
 
     elif message.text == "Ярмарка и выставка услуг":
-        uppdute('Ярмарка и выставка услуг', 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, messageChatId)
+        uppdute('Ярмарка и выставка услуг', 0,0,0,0,0,0,1,1,1,0,0,0,0,0,0, messageChatId)
 
         send = bot.send_message(message.chat.id, 'Мне интереснее беседовать о:', reply_markup=besedio)
-        bot.register_next_step_handler(send, testing8)
+        bot.register_next_step_handler(send, testing8_1)
 
     elif message.text == "Выставка продукции производственного назначения":
-        uppdute('Выставка продукции производственного назначения', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1,
-                messageChatId)
+        uppdute('Выставка продукции производственного назначения', 0,0,0,0,0,0,0,0,0,1,0,0,0,0,1, messageChatId)
 
         send = bot.send_message(message.chat.id, 'Мне интереснее беседовать о:', reply_markup=besedio)
-        bot.register_next_step_handler(send, testing8)
+        bot.register_next_step_handler(send, testing8_1)
 
     elif message.text == "Выставка дорожного хозяйства, техники":
-        uppdute('Выставка дорожного хозяйства, техники', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, messageChatId)
+        uppdute('Выставка дорожного хозяйства, техники', 0,0,0,0,0,0,0,0,0,0,0,0,1,1,0, messageChatId)
 
         send = bot.send_message(message.chat.id, 'Мне интереснее беседовать о:', reply_markup=besedio)
-        bot.register_next_step_handler(send, testing8)
+        bot.register_next_step_handler(send, testing8_1)
 
     elif message.text == 'Вернуться назад':
         send = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=markup)
@@ -1155,9 +1498,9 @@ def testing7(message):
 
     else:
         send = bot.send_message(message.chat.id, 'Ошибка! Выберите ответ предложенный на кнопках ниже')
-        bot.register_next_step_handler(send, testing7)
+        bot.register_next_step_handler(send, testing7_1)
 
-def testing8(message):
+def testing8_1(message):
     messageChatId = int(message.chat.id)
 
     if message.text == "Компьютерных вирусах, проблемах настройки компьютеров":
@@ -1165,38 +1508,38 @@ def testing8(message):
                 messageChatId)
 
         send = bot.send_message(message.chat.id, 'Подсчет ответов...', reply_markup=finaly)
-        bot.register_next_step_handler(send, testing9)
+        bot.register_next_step_handler(send, testing9_1)
 
     elif message.text == "Автомобилям и ситуациях на дорогах":
         uppdute('Автомобилям и ситуациях на дорогах', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, messageChatId)
 
         send = bot.send_message(message.chat.id, 'Подсчет ответов...', reply_markup=finaly)
-        bot.register_next_step_handler(send, testing9)
+        bot.register_next_step_handler(send, testing9_1)
 
     elif message.text == "Туризме, достопримечательностях, путешествиях":
         uppdute('Туризме, достопримечательностях, путешествиях', 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0,
                 messageChatId)
 
         send = bot.send_message(message.chat.id, 'Подсчет ответов...', reply_markup=finaly)
-        bot.register_next_step_handler(send, testing9)
+        bot.register_next_step_handler(send, testing9_1)
 
     elif message.text == "Политике, законе":
         uppdute('Политике, законе', 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, messageChatId)
 
         send = bot.send_message(message.chat.id, 'Подсчет ответов...', reply_markup=finaly)
-        bot.register_next_step_handler(send, testing9)
+        bot.register_next_step_handler(send, testing9_1)
 
     elif message.text == "Применении новых технологий в быту":
         uppdute('Применении новых технологий в быту', 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, messageChatId)
 
         send = bot.send_message(message.chat.id, 'Подсчет ответов...', reply_markup=finaly)
-        bot.register_next_step_handler(send, testing9)
+        bot.register_next_step_handler(send, testing9_1)
 
     elif message.text == "Развитии инфраструктуры города":
         uppdute('Развитии инфраструктуры города', 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, messageChatId)
 
         send = bot.send_message(message.chat.id, 'Подсчет ответов...', reply_markup=finaly)
-        bot.register_next_step_handler(send, testing9)
+        bot.register_next_step_handler(send, testing9_1)
 
     elif message.text == 'Вернуться назад':
         send = bot.send_message(message.chat.id, 'Вы вернулись назад', reply_markup=markup)
@@ -1204,9 +1547,9 @@ def testing8(message):
 
     else:
         send = bot.send_message(message.chat.id, 'Ошибка! Выберите ответ предложенный на кнопках ниже')
-        bot.register_next_step_handler(send, testing7)
+        bot.register_next_step_handler(send, testing8_1)
 
-def testing9(message):
+def testing9_1(message):
     messageChatId = int(message.chat.id)
     listgroup = ["ca", "ct", "cv", "vc", "te", "ar", "yp", "uc", "gd", "sc", "cs", "ms", "cp", "cd", "mg"]
 
@@ -1297,10 +1640,19 @@ def testing9(message):
 
         else:
             send = bot.send_message(message.chat.id, 'Ошибка! Выберите ответ предложенный на кнопках ниже')
-            bot.register_next_step_handler(send, testing9)
+            bot.register_next_step_handler(send, testing9_1)
+####################################################ТЕСТ#############################################################
 
-
-bot.polling(non_stop=True)
-
-
-
+async def startpoling():
+    try:
+        print("started")
+        bot.polling(non_stop=True)
+    except Exception as exept:
+        print("!!!crashed!!!")
+        print(exept)
+        bot.stop_polling() 
+    finally:
+        print("stopped")
+        bot.stop_polling()    
+if __name__ == "__main__":
+    asyncio.run(startpoling())
