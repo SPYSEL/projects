@@ -4,10 +4,7 @@ import time
 import sqlite3
 import asyncio
 
-
-#chislitznam = 'Числитель' #ИЗМЕНИТЬ ЭТУ ПАРАШУ
-
-bot = telebot.TeleBot('5654743331:AAGg14yIENs3F3c47AjCtNGcKcEF5wkakgM')
+bot = telebot.TeleBot('TOKEN')
 
 messageFromMe = ''
 
