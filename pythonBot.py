@@ -1,6 +1,7 @@
 import telebot
 from telebot import types
 import sqlite3
+import time
 import asyncio
 
 bot = telebot.TeleBot('TOKEN')
@@ -1718,7 +1719,7 @@ async def startpoling():
     except Exception as exept:
         print("!!!crashed!!!")
         print(exept)
-        bot.stop_polling()
+        sleep(15)
     finally:
         print("stopped")
         bot.stop_polling()
