@@ -6,7 +6,7 @@ import asyncio
 import aiohttp
 from bs4 import BeautifulSoup
 
-bot = telebot.TeleBot('6019386505:AAFZcdkry75sTkZ-ZE9pgdMsFFWFc7PU3_o')
+bot = telebot.TeleBot('TOKEN')
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 markup.add(types.KeyboardButton('Ввести запрос'))
@@ -26,7 +26,6 @@ websites = [
     "https://sport.rambler.ru/",
     "https://lenta.ru/rubrics/sport/"
 ]
-blacklist = []
 ###########################START################################
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -82,10 +81,9 @@ async def process_website(session, site, word):
 								break
 			else:
 				print("")
-				blacklist.append(site)
+
 	except aiohttp.ClientError as e:
 		print("")
-		blacklist.append(site)
 
 async def search_word_on_websites(word, websites):
 	global messageChatId
