@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результаты по конкретной поликлинике</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Результаты по конкретной поликлинике</h1>
+    <form action="/chief_doctor_calculate" method="post">
+        <label for="organization">Выберите поликлинику:</label>
+        <select name="organization" id="organization">
+            {% for org in organizations %}
+                <option value="{{ org }}">{{ org }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Рассчитать</button>
+    </form>
+    {% if results %}
+        <h2>Результаты для {{ selected }}</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Должность</th>
+                    <th>Необходимое количество врачей</th>
+                    <th>Текущее количество штатных единиц</th>
+                    <th>Дефицит/Профицит</th>
+                    <th>Текущая нагрузка</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in results %}
+                    <tr>
+                        <td>{{ row['Должность'] }}</td>
+                        <td>{{ row['Необходимое количество врачей'] }}</td>
+                        <td>{{ row['Текущее количество штатных единиц'] }}</td>
+                        <td>{{ row['Дефицит/Профицит'] }}</td>
+                        <td>{{ row['Текущая нагрузка'] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <form action="/recommendations" method="post">
+            <input type="hidden" name="results" value='{{ results|tojson }}'>
+            <button type="submit">Получить рекомендации</button>
+        </form>
+    {% endif %}
+</body>
+</html>

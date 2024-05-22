@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Состояние кадров в сфере здравоохранения</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="left-side">
+            <div class="content">
+                <h1>Состояние кадров в сфере здравоохранения Амурской области</h1>
+                <a href="/minister" class="button">Председатель министерства здравоохранения</a>
+                <a href="/chief_doctor" class="button">Главный врач</a>
+            </div>
+        </div>
+        <div class="right-side">
+            <img src="{{ url_for('static', filename='images/image1.png') }}" alt="Medical Image">
+        </div>
+    </div>
+</body>
+</html>

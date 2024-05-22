@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить новый дом</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>Добавить новый дом</h1>
+            <form action="/add_new_house" method="post" enctype="multipart/form-data">
+                <div>
+                    <label for="address">Адрес нового дома:</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+                <div>
+                    <label for="apartments">Количество квартир:</label>
+                    <input type="number" id="apartments" name="apartments" required>
+                </div>
+                <div>
+                    <label for="file">Выберите файл (необязательно):</label>
+                    <input type="file" id="file" name="file">
+                </div>
+                <button type="submit">Отправить</button>
+            </form>
+            {% if message %}
+                <p>{{ message }}</p>
+            {% endif %}
+            {% if error %}
+                <p>{{ error }}</p>
+            {% endif %}
+            {% if results %}
+                <h2>Результаты для {{ closest_clinic }}</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Должность</th>
+                            <th>Необходимое количество врачей</th>
+                            <th>Текущее количество штатных единиц</th>
+                            <th>Дефицит/Профицит</th>
+                            <th>Текущая нагрузка</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in results %}
+                            <tr>
+                                <td>{{ row['Должность'] }}</td>
+                                <td>{{ row['Необходимое количество врачей'] }}</td>
+                                <td>{{ row['Текущее количество штатных единиц'] }}</td>
+                                <td>{{ row['Дефицит/Профицит'] }}</td>
+                                <td>{{ row['Текущая нагрузка'] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <form action="/recommendations" method="post">
+                    <input type="hidden" name="results" value='{{ results|tojson }}'>
+                    <button type="submit">Получить рекомендации</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
